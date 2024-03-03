@@ -1,0 +1,2 @@
+1, Ion Popescu, parola123, 2
+2, Gica Hagi, pisica, 1
