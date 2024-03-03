@@ -18,6 +18,7 @@ void sign_up(){
         parola[((strlen(parola) - 1))] = '\0';
         adaugare_cont(nume_utilizator, parola);
         getchar();
+        system("cls");
         return;
     }
     else{
