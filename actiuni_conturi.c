@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 int accesare_cont(char *nume){
-    char buffer[1024]; // Buffer to hold each line from the file
-    FILE *file = fopen("date_conturi.txt", "r"); // Open the file for reading
+    char buffer[1024];
+    FILE *file = fopen("date_conturi.txt", "r");
 
     if (file == NULL) {
         perror("Error opening file");
-        return -1; // Return -1 to indicate file opening error
+        return -1;
     }
-    while (fgets(buffer, 1024, file)) { // Read lines into buffer
-        if (strstr(buffer, nume)) { // Check if search_string is in line
+    while (fgets(buffer, 1024, file)) {
+        if (strstr(buffer, nume)) {
             printf("%s\n", buffer);
         }
     }
-    fclose(file); // Close the file
+    fclose(file);
     return 0;
 }

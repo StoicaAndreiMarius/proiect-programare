@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.27)
-project(tmpc C)
+cmake_minimum_required(VERSION 3.10)
+project(proiect-programare)
 
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 99)
 
-add_executable(tmpc main.c)
+add_executable(proiect-programare main.c csv_parser.c actiuni_conturi.c)

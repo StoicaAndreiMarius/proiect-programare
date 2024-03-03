@@ -3,68 +3,86 @@
 #include <string.h>
 
 int exista_cont(char *nume){
-    char buffer[1024]; // Buffer to hold each line from the file
-    FILE *file = fopen("conturi.txt", "r"); // Open the file for reading
+    char buffer[1024];
+    FILE *file = fopen("conturi.txt", "r");
 
     if (file == NULL) {
         perror("Error opening file");
-        return -1; // Return -1 to indicate file opening error
+        return -1;
     }
 
-    while (fgets(buffer, 1024, file)) { // Read lines into buffer
-        if (strstr(buffer, nume)) { // Check if search_string is in line
-            fclose(file); // Close the file
-            return 1; // Return 1 if string is found
+    while (fgets(buffer, 1024, file)) {
+        if (strstr(buffer, nume)) {
+            fclose(file);
+            return 1;
         }
     }
-    fclose(file); // Close the file
-    return 0; // Return 0 if string is not found
+    fclose(file);
+    return 0;
 }
 
 int parola_corecta(char *nume, char *parola){
-    char buffer[1024]; // Buffer to hold each line from the file
-    FILE *file = fopen("conturi.txt", "r"); // Open the file for reading
+    char buffer[1024];
+    FILE *file = fopen("conturi.txt", "r");
 
     if (file == NULL) {
         perror("Error opening file");
-        return -1; // Return -1 to indicate file opening error
+        return -1;
     }
 
-    while (fgets(buffer, 1024, file)) { // Read lines into buffer
-        if (strstr(buffer, nume) && strstr(buffer, parola)) { // Check if search_string is in line
-            fclose(file); // Close the file
-            return 1; // Return 1 if string is found
+    while (fgets(buffer, 1024, file)) {
+        if (strstr(buffer, nume) && strstr(buffer, parola)) {
+            fclose(file);
+            return 1;
         }
     }
-    fclose(file); // Close the file
-    return 0; // Return 0 if string is not found
+    fclose(file);
+    return 0;
+}
+
+void adaugare_cont(char *nume, char *parola){
+    char buffer[1024];
+    FILE *file = fopen("conturi.txt", "r");
+    int i = 1;
+    while(fgets(buffer, 1024, file)){
+        i++;
+    }
+    fclose(file);
+    char id[100];
+    FILE *file_w = fopen("conturi.txt", "a");
+    sprintf(id, "%d", i);
+    strcpy(buffer, id);
+    strcat(buffer, ",");
+    strcat(buffer, nume);
+    strcat(buffer, ",");
+    strcat(buffer, parola);
+    strcat(buffer, ",0");
+    fprintf(file_w, "%s", "\n");
+    fprintf(file_w, "%s", buffer);
+    fclose(file_w);
+    printf("Cont adaugat cu succes!");
 }
 
 
 void parse_csv(const char *file_path) {
-    const int BUFFER_SIZE = 1024; // Adjust based on expected line length
+    const int BUFFER_SIZE = 1024;
     char buffer[BUFFER_SIZE];
 
-    // Open the CSV file for reading
     FILE *file = fopen(file_path, "r");
     if (!file) {
         perror("Unable to open file");
         return;
     }
 
-    // Read each line from the file
     while (fgets(buffer, BUFFER_SIZE, file)) {
-        // Remove newline character at the end of the line
         buffer[strcspn(buffer, "\n")] = 0;
 
-        // Use strtok to split the line by commas
         char *token = strtok(buffer, ",");
         while (token) {
-            printf("%s ", token); // Print each field (or handle accordingly)
+            printf("%s ", token);
             token = strtok(NULL, ",");
         }
     }
 
-    // Close the file
     fclose(file);
 }
