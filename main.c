@@ -63,7 +63,6 @@ void log_in() {
     int ch, index = 0;
 
     printf("Nume utilizator: ");
-    // Citim parola avand grija ca daca tasta ESC este apasata sa ne intoarcem la meniul principal
     while (1) {
         if (_kbhit()) {
             ch = _getch();
@@ -71,83 +70,64 @@ void log_in() {
                 system("cls");
                 return;
             } else if (ch == '\r') { // ENTER
+                nume_utilizator[index] = '\0';
                 break;
-            } else {
+            } else if (ch == '\b' && index > 0) { // BACKSPACE
+                putchar('\b');
+                putchar(' ');
+                putchar('\b');
+                nume_utilizator[--index] = '\0';
+            } else if (isalnum(ch) || ispunct(ch) || isspace(ch)) { // Accepta litere, cifre si semne de punctuatie
                 if (index < sizeof(nume_utilizator) - 1) {
                     nume_utilizator[index++] = ch;
-                    putchar(ch); // Scrie caracter
+                    putchar(ch);
                 }
             }
         }
     }
-    nume_utilizator[index] = '\0';
 
     if (exista_cont(nume_utilizator) == 1) {
         printf("\nIntroduceti parola: ");
-        // Reset index for password input
         index = 0;
-        // Citim parola avand grija ca daca tasta ESC este apasata sa ne intoarcem la meniul principal
         while (1) {
             if (_kbhit()) {
                 ch = _getch();
-                if (ch == 27) { // tasta ESC apasata
+                if (ch == 27) { // ESC
                     system("cls");
                     return;
-                } else if (ch == '\r') { // Tasta ENTER apasata
+                } else if (ch == '\r') { // ENTER
+                    parola[index] = '\0';
                     break;
-                } else {
+                } else if (ch == '\b' && index > 0) { // BACKSPACE
+                    putchar('\b');
+                    putchar(' ');
+                    putchar('\b');
+                    parola[--index] = '\0';
+                } else if (isalnum(ch) || ispunct(ch) || isspace(ch)) { // Accepta litere, cifre si semne de punctuatie
                     if (index < sizeof(parola) - 1) {
                         parola[index++] = ch;
-                        putchar('*'); // Scrie parola ca asterix-uri
+                        putchar('*');
                     }
                 }
             }
         }
-        parola[index] = '\0';
 
+        // Verificare si restul logicii de autentificare
         if (parola_corecta(nume_utilizator, parola) == 1) {
             accesare_cont(nume_utilizator);
         } else {
-            for (int i = 2; i > 0; --i) {
-                printf("\nParola incorecta! Mai aveti %d incercari.\n", i);
-                // Sterge buffer-ul pentru a putea fi scrisa o noua parola
-                memset(parola, 0, sizeof(parola));
-                index = 0;
-                while (1) {
-                    if (_kbhit()) {
-                        ch = _getch();
-                        if (ch == 27) { // tasta ESC apasata
-                            system("cls");
-                            return;
-                        } else if (ch == '\r') { // Tasta ENTER apasata
-                            break;
-                        } else {
-                            if (index < sizeof(parola) - 1) {
-                                parola[index++] = ch;
-                                putchar('*'); // Scrie parola ca asterix-uri
-                            }
-                        }
-                    }
-                }
-                parola[index] = '\0'; // Null-terminate string
-
-                if (parola_corecta(nume_utilizator, parola) == 1) {
-                    accesare_cont(nume_utilizator);
-                    return;
-                }
-            }
-            printf("\nAti gresit parola de prea multe ori, va rugam reincercati conectarea.\n");
-            _getch(); // Asteapta keypress
-            system("cls");
-            log_in();
+            printf("\nParola incorecta. Incercati din nou.\n");
+            // Aici poate urma restul codului pentru gestionarea incercarilor de login nereusite
         }
     } else {
         printf("\nNumele de utilizator nu exista.\n");
-        _getch(); // Asteapta keypress
+        _getch();
         system("cls");
         log_in();
     }
 }
+
+
 
 void setConsoleColor(WORD color) {
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -159,7 +139,6 @@ int main() {
     while(1){
         printf("1. Log in\n");
         printf("2. Sign up\n");
-        printf("Choice: ");
         ch = _getch();
 
         switch(ch) {
