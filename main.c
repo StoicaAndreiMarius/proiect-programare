@@ -57,6 +57,8 @@ void sign_up() {
     }
 }
 
+
+
 void log_in() {
     char nume_utilizator[100] = {0};
     char parola[100] = {0};
@@ -111,9 +113,10 @@ void log_in() {
                 }
             }
         }
-
+        printf("\n%s\n%s", nume_utilizator, parola);
         // Verificare si restul logicii de autentificare
         if (parola_corecta(nume_utilizator, parola) == 1) {
+            system("cls");
             accesare_cont(nume_utilizator);
         } else {
             printf("\nParola incorecta. Incercati din nou.\n");
@@ -126,8 +129,6 @@ void log_in() {
         log_in();
     }
 }
-
-
 
 void setConsoleColor(WORD color) {
     HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -158,5 +159,4 @@ int main() {
                 break;
         }
     }
-    return 0;
 }
