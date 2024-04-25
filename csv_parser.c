@@ -30,37 +30,37 @@ int exista_cont(char *nume) {
 }
 
 
-int parola_corecta(char *nume, char *parola) {
-    char buffer[1024];
+int parola_corecta(const char *username, const char *password) {
     FILE *file = fopen("conturi.txt", "r");
-    char *token;
-    char *nume_fisier;
-    char *parola_fisier;
-
     if (file == NULL) {
         perror("Error opening file");
         return -1;
     }
 
-    if (nume == NULL || parola == NULL || strlen(nume) == 0 || strlen(parola) == 0) {
-        fclose(file);
-        return 0;
-    }
+    char line[1024];
+    while (fgets(line, sizeof(line), file)) {
+        char *token;
+        // Ignorăm ID-ul deoarece nu ne interesează
+        token = strtok(line, ",");
+        // Obținem numele de utilizator
+        token = strtok(NULL, ",");
+        if (token == NULL) continue;
+        char *file_username = token;
+        // Obținem parola
+        token = strtok(NULL, ",");
+        if (token == NULL) continue;
+        char *file_password = token;
+        // Eliminăm newline-ul de la sfârșitul parolei, dacă există
+        file_password[strcspn(file_password, "\n")] = 0;
 
-    while (fgets(buffer, 1024, file)) {
-        token = strtok(buffer, ",");
-        nume_fisier = strtok(NULL, ",");
-        parola_fisier = strtok(NULL, ",");
-
-        if (nume_fisier != NULL && parola_fisier != NULL &&
-            strcmp(nume_fisier, nume) == 0 && strcmp(parola_fisier, parola) == 0) {
+        if (strcmp(username, file_username) == 0 && strcmp(password, file_password) == 0) {
             fclose(file);
-            return 1;
+            return 1; // Utilizatorul și parola se potrivesc
         }
     }
 
     fclose(file);
-    return 0;
+    return 0; // Nu s-a găsit o potrivire
 }
 
 

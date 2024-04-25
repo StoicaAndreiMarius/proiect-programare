@@ -1,3 +1,6 @@
-1, Ion Popescu, EUR, 5500
-2, Ion Popescu, RON, 17300
-1, Gica Hagi, EUR, 13000000
+Ion Popescu, RON, 0
+Ion Popescu, EUR, 0
+Gica Hagi, EUR, 0
+Gica Hagi, RON, 0
+Stoica Marius, RON, 1148845580
+Stoica Marius, EUR, 0
